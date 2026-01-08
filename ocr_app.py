@@ -24,6 +24,7 @@ from dotenv import load_dotenv
 
 load_dotenv()   
 
+
 API_KEY = os.getenv("API_KEY")
 ORGCODE = os.getenv("ORGCODE")
 DBID = os.getenv("DBID")
@@ -91,11 +92,6 @@ def search_lead_by_phone(phone):
 
 
 # In Render, set environment variable GOOGLE_APPLICATION_JSON with the full JSON content
-
-# -----------------------------
-# Create credentials
-# -----------------------------
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, "googleserviceacc.json")
 
@@ -104,8 +100,6 @@ SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, "googleserviceacc.json")
 # -----------------------------
 credentials = service_account.Credentials.from_service_account_file(
     SERVICE_ACCOUNT_FILE)
-# Optional: refresh token manually if needed for REST calls
-
 
 # ----------------- Vision Client -----------------
 def get_vision_client():
@@ -322,6 +316,8 @@ def mavis_record_exists_by_phone(phone):
 
 
 
+
+
 @app.route("/upload", methods=["POST"])
 def upload_file():
     files = request.files.getlist("id_files")
@@ -391,15 +387,17 @@ def upload_file():
 
             if len(doc) >= 1 and not front_bytes:
                 front_bytes = doc[0].get_pixmap().tobytes("png")
-
+                front_file = f  # <-- add this
             if len(doc) >= 2 and not back_bytes:
                 back_bytes = doc[1].get_pixmap().tobytes("png")
-
+                back_file = f  # <-- add this
         else:
             if not front_bytes:
                 front_bytes = file_bytes
+                front_file = f 
             elif not back_bytes:
                 back_bytes = file_bytes
+                back_file = f  # <-- add this
 
         # -------------------- UPLOAD FRONT --------------------
         upload_url = "https://files-in21.leadsquared.com/File/Upload"
@@ -416,18 +414,21 @@ def upload_file():
             "Entity": 0,
             "StorageVersion": 0
         }
+        # UPLOAD FRONT
         if front_bytes:
-            file_stream.seek(0)
+            front_stream = BytesIO(front_bytes)  # new stream for front
             files_payload = {
-                "uploadFiles": (f.filename, file_stream, f.content_type)
+                "uploadFiles": ("front_" + front_file.filename, front_stream, front_file.content_type)
             }
-    
+        
             lsq_resp = requests.post(
                 upload_url,
                 data=form_data,
                 files=files_payload,
                 verify=False
             )
+            
+
     
             if lsq_resp.status_code == 200:
                 result = lsq_resp.json()
@@ -457,18 +458,21 @@ def upload_file():
             "Entity": 0,
             "StorageVersion": 0
         }
+        # UPLOAD BACK
         if back_bytes:
-            file_stream.seek(0)
+            back_stream = BytesIO(back_bytes)  # new stream for back
             files_payload = {
-                "uploadFiles": (f.filename, file_stream, f.content_type)
+                "uploadFiles": ("back_" + back_file.filename, back_stream, back_file.content_type)
             }
-    
+        
             lsq_resp = requests.post(
                 upload_url,
                 data=form_data2,
                 files=files_payload,
                 verify=False
             )
+    
+
     
             if lsq_resp.status_code == 200:
                 result = lsq_resp.json()
@@ -555,7 +559,6 @@ def upload_file():
         lead_id=lead_id,
         uploaded_files=uploaded_files
     )
-
 @app.route("/confirm", methods=["POST"])
 def confirm():
     data = request.form.to_dict()
