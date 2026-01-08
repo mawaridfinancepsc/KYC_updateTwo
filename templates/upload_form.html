@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emirates ID OCR Upload</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            background-color: #f9f9f9;
+        }
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 30px 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        img.logo {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+        h2 { 
+            color: #2c3e50; 
+            margin-bottom: 15px;
+        }
+        label { font-weight: bold; }
+        input, button { 
+            margin-top: 10px; 
+            padding: 8px; 
+            width: 100%;
+            max-width: 300px;
+            font-size: 14px;
+        }
+        button { 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            margin-top: 20px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        p.note {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        ul { text-align: left; display: inline-block; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo -->
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Company Logo" class="logo">
+
+        <h2>Upload Emirates ID Files</h2>
+        
+
+        <p>Separate files for front and back (Only pdf and images allowed).</p>
+        
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+            <!-- Pass the Lead ID -->
+            <input type="hidden" name="lead_id" value="{{ lead_id }}">
+            <input type="hidden" name="phone" value="{{ phone }}">
+        
+            <label><strong>Upload Emirates ID - Front (required):</strong></label><br>
+            <input type="file" name="id_files" accept=".pdf,.jpg,.jpeg,.png" required><br><br>
+        
+            <label><strong>Upload Emirates ID - Back (optional):</strong></label><br>
+            <input type="file" name="id_files" accept=".pdf,.jpg,.jpeg,.png"><br><br>
+        
+            <button type="submit">Upload</button>
+        </form>
+        
+    </div>
+</body>
+</html>
+
+

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm Emirates ID Details</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            background-color: #f9f9f9;
+        }
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 30px 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        img.logo {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+        h2 { 
+            color: #2c3e50; 
+            margin-bottom: 10px;
+        }
+        h3 { 
+            color: #34495e;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        label { font-weight: bold; display: block; margin-top: 10px; }
+        input { 
+            margin-top: 5px; 
+            padding: 8px; 
+            width: 100%;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        button { 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            margin-top: 20px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo -->
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Company Logo" class="logo">
+
+        <h2>Confirm Emirates ID Details</h2>
+
+        <form method="POST" action="/confirm">
+            <input type="hidden" name="lead_id" value="{{ lead_id }}">
+            <h3>Phone Number</h3>
+            <input type="text" name="phone" value="{{ data.get('phone', '') }}" readonly>
+            <!-- Front ID fields -->
+            <h3>Front ID</h3>
+            <label>Emirates ID Number:</label>
+            <input type="text" name="emirates_id_number" value="{{ data.get('emirates_id_number', '') }}" required>
+
+            <label>Full Name:</label>
+            <input type="text" name="full_name" value="{{ data.get('full_name', '') }}" required>
+
+            <label>Date of Birth:</label>
+            <input type="text" name="date_of_birth" value="{{ data.get('date_of_birth', '') }}">
+
+            <label>Nationality:</label>
+            <input type="text" name="nationality" value="{{ data.get('nationality', '') }}">
+
+            <label>Sex:</label>
+            <input type="text" name="sex" value="{{ data.get('sex', '') }}">
+
+            <label>Issuing Date:</label>
+            <input type="text" name="issuing_date" value="{{ data.get('issuing_date', '') }}">
+
+            <label>Expiry Date:</label>
+            <input type="text" name="expiry_date" value="{{ data.get('expiry_date', '') }}">
+
+            <!-- Back ID fields -->
+            <h3>Back ID</h3>
+            <label>Occupation:</label>
+            <input type="text" name="occupation" value="{{ data.get('occupation', '') }}">
+
+            <label>Employer / Sponsor:</label>
+            <input type="text" name="employer_or_sponsor" value="{{ data.get('employer_or_sponsor', '') }}">
+
+            <label>Issuing Place:</label>
+            <input type="text" name="issuing_place" value="{{ data.get('issuing_place', '') }}">
+
+            <button type="submit">✅ Confirm Details</button>
+        </form>
+    </div>
+</body>
+</html>
+

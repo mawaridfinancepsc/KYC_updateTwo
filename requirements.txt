@@ -1,0 +1,13 @@
+gunicorn
+requests
+PyMuPDF
+google-auth
+google-auth-httplib2
+google-api-python-client
+Flask==2.3.2
+requests==2.31.0
+google-cloud-vision
+google-auth==2.21.0
+waitress==2.1.2
+gspread==5.7.2
+dotenv
