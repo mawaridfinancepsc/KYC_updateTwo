@@ -59,12 +59,17 @@
         <!-- Logo -->
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Company Logo">
 
-        <h2>Enter Customer Mobile Number</h2>
+        <h2>Enter Registered Mobile Number</h2>
         <form method="POST">
-            <input type="text" name="mobile" placeholder="+971-50xxxxxxx" required><br>
-            <small>Enter mobile number in format: <strong>+971-50xxxxxxx</strong></small><br><br>
+            <div class="phone-input">
+                
+                <input type="text" name="mobile" maxlength="9" pattern="5\d{8}" placeholder="5XXXXXXXX" required>
+            </div>
+        
+            
             <button type="submit">Next</button>
         </form>
+
 
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
